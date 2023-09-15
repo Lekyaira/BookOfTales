@@ -1,0 +1,3 @@
+-- Matrix A
+INSERT INTO matrixResult VALUES
+(183, 25, 236)

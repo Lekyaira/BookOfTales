@@ -1,0 +1,7 @@
+select * from encounterValueRolled where encounterNumber=93 and value=5;
+
+SELECT adjective.name, noun, matrix.name
+FROM encounterValueRolled
+JOIN matrix ON matrixCode=code
+JOIN adjective ON adjectiveId=adjective.id
+WHERE encounterNumber=93 AND value=5;

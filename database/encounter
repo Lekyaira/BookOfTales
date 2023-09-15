@@ -1,0 +1,13 @@
+INSERT INTO encounter VALUES
+(87, 2, 'Prince'),
+(93, 2, 'Prince'),
+(102, 2, 'Prince'),
+(0, 4, 'Lion');
+
+INSERT INTO encounter(number, typeId) VALUES
+(47, 1),
+(48, 1),
+(50, 1),
+(51, 1),
+(14, 1),
+(36, 3);

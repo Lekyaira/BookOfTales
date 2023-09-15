@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+const mysql = require("mysql2");
+const knex = require("knex")({
+  client: "mysql2",
+  connection: {
+    host: "localhost",
+    user: "ryan",
+    password: "Taradhve",
+    database: "BookOfTales",
+  },
+});
+const args = process.argv;
+
+const adjective = args[2];
+const action = args[3];
+const paragraph = args[4];
+
+async function getData(adjective, action) {
+  const adjectiveResult = await knex("adjective")
+    .select("id")
+    .where("name", adjective)
+    .first();
+  const actionResult = await knex("action")
+    .select("id")
+    .where("name", action)
+    .first();
+  const paragraphResult = await knex("paragraph")
+    .select("number")
+    .where("number", Number(paragraph))
+    .first();
+
+  var adjectiveId = adjectiveResult ? adjectiveResult.id : undefined;
+  var actionId = actionResult ? actionResult.id : undefined;
+  var paragraphNumber = paragraphResult ? paragraphResult.id : undefined;
+
+  if (!adjectiveId) {
+    await knex("adjective").insert({ name: adjective });
+    const insertResult = await knex("adjective")
+      .select("id")
+      .where("name", adjective)
+      .first();
+    adjectiveId = insertResult.id;
+  }
+  if (!actionId) {
+    await knex("action").insert({ name: action });
+    const insertResult = await knex("action")
+      .select("id")
+      .where("name", action)
+      .first();
+    actionId = insertResult.id;
+  }
+  if (!paragraphNumber) {
+    await knex("paragraph").insert({ number: Number(paragraph) });
+  }
+
+  await knex("matrixResult").insert({
+    actionId: actionId,
+    adjectiveId: adjectiveId,
+    paragraphNumber: Number(paragraph),
+  });
+}
+
+getData(adjective, action).then(() => {
+  knex.destroy();
+});

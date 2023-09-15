@@ -1,0 +1,2 @@
+INSERT INTO encounterType(type) VALUES
+('Terrain'), ('Character'), ('City');

@@ -1,0 +1,177 @@
+CREATE TABLE encounter(
+    number int unsigned,
+    typeId int unsigned NOT NULL,
+    PRIMARY KEY (number)
+);
+
+CREATE TABLE encounterType(
+    id int unsigned auto_increment,
+    type varchar(20) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE matrix(
+    code int unsigned,
+    name varchar(1) NOT NULL UNIQUE,
+    PRIMARY KEY (code)
+);
+
+CREATE TABLE encounterValueRolled(
+    encounterNumber int unsigned,
+    value int unsigned NOT NULL CHECK (value <= 12),
+    matrixCode int unsigned NOT NULL,
+    adjectiveId int unsigned NOT NULL,
+    noun varchar(20),
+    PRIMARY KEY (encounterNumber, value),
+    FOREIGN KEY (encounterNumber) REFERENCES encounter(number)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY (matrixCode) REFERENCES matrix(code)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY (adjectiveId) REFERENCES adjective(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+CREATE TABLE action(
+    id int unsigned auto_increment,
+    name varchar(20) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE adjective(
+    id int unsigned auto_increment,
+    name varchar(20) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE matrixAction(
+    matrixCode int unsigned,
+    actionId int unsigned,
+    PRIMARY KEY (matrixCode, actionId),
+    FOREIGN KEY (matrixCode) REFERENCES matrix(code)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (actionId) REFERENCES action(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE matrixAdjective(
+    matrixCode int unsigned,
+    adjectiveId int unsigned,
+    PRIMARY KEY (matrixCode, adjectiveId),
+    FOREIGN KEY (matrixCode) REFERENCES matrix(code)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (adjectiveId) REFERENCES adjective(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE paragraph(
+    number int unsigned,
+    introduction text,
+    PRIMARY KEY (number)
+);
+
+CREATE TABLE matrixResult(
+    actionId int unsigned,
+    adjectiveId int unsigned,
+    paragraphNumber int unsigned NOT NULL,
+    PRIMARY KEY (actionId, adjectiveId),
+    FOREIGN KEY (paragraphNumber) REFERENCES paragraph(number)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE skill(
+    id int unsigned auto_increment,
+    name varchar(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE status(
+    id int unsigned auto_increment,
+    name varchar(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE treasure(
+    id int unsigned auto_increment,
+    name varchar(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE reward(
+    id int unsigned auto_increment,
+    destiny int,
+    story int,
+    wealthLevel int,
+    wealthLimit int,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE rewardSkill(
+    skillId int unsigned,
+    rewardId int unsigned,
+    PRIMARY KEY (skillId, rewardId),
+    FOREIGN KEY (skillId) REFERENCES skill(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (rewardId) REFERENCES reward(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE rewardStatus(
+    statusId int unsigned,
+    rewardId int unsigned,
+    PRIMARY KEY (statusId, rewardId),
+    FOREIGN KEY (statusId) REFERENCES status(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (rewardId) REFERENCES reward(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE rewardTreasure(
+    treasureId int unsigned,
+    rewardId int unsigned,
+    PRIMARY KEY (treasureId, rewardId),
+    FOREIGN KEY (treasureId) REFERENCES treasure(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (rewardId) REFERENCES reward(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE part(
+    id int unsigned auto_increment,
+    paragraphNumber int unsigned NOT NULL,
+    desctiption text NOT NULL,
+    mandatory bool NOT NULL DEFAULT 0,
+    rewardId int unsigned,
+    PRIMARY KEY (id),
+    FOREIGN KEY (paragraphNumber) REFERENCES paragraph(number)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY (rewardId) REFERENCES reward(id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+
+CREATE TABLE partRequiredSkill(
+    partId int unsigned,
+    skillId int unsigned,
+    PRIMARY KEY (partId, skillId),
+    FOREIGN KEY (partId) REFERENCES part(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (skillId) REFERENCES skill(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);

@@ -1,0 +1,25 @@
+An encounter will refer to a numbered encounter, a place of power of an N
+matrix encounter. The player looks up the encounter number on the encounter
+chart, then rolls a die, adds the location value and +1 or +2 for their
+destiny track to get the total encounter value. If the value is above
+12, it is set to 12. The player then reads the result from the encounter
+chart, which is a noun adjective pair and an encounter matrix.
+
+The player then chooses a reaction from the appropriate matrix, then
+looks up the Book of Tales encounter paragraph. The paragraph will have
+an introduction part, then may have skill parts. If the player has the
+skill, they may select that option, otherwise they read the NO SKILL part.
+A skill part may be mandatory, and must be selected if the character has
+the skill. If the player has master skills, they may choose to use that
+skill to read the paragraph above or below this paragraph. If the player
+has no mastry skills, they instead roll a fate die to determine if they
+read this paragraph, the one above or the one below.
+Paragraphs may contain the text "other" which is read as the encounter
+adjective+noun.
+Paragraphs may have multiple options that the player may choose from, and
+may require further rolls.
+Once the paragraph has been read, they are given any rewards for their
+choices. Rewards can be destiny or story points, positive or negative,
+wealth, positive or negative with a limit, skills, statuses or treasures.
+Skills, statuses or treasures may be remove from the player as well.
+Treasures may be specific or random.

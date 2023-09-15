@@ -1,0 +1,95 @@
+1. Player enters encounter number, notes what encountered
+    If encounter is set matrix, skil to 5.
+2. Player rolls die, adds +1/2 for destiny, plus value on location
+    a. (value > 12 = 12)
+3. Look up value of 1. on encounter chart
+4. Look up value of 2. on encounter chart result
+    a. Adds prefix to 1. what encountered
+5. Player chooses reaction
+6. Player rolls fate die
+7. If player has master skill, may choose to skip directly to BoT result
+    for that skill
+8. If not using master skill, read BoT result, read one less for fate -,
+    read one more for fate +
+9. Player makes choices given in BoT result
+10. Gain rewards given in BoT result + choices
+
+Rewards:
+Destiny value+-
+Story value +-
+Wealth value +- (max/min)
+Skills
+Statuses
+Treasures (set or random)
+Other Effects
+
+Request Reaction
+1.-4.
+Request sends json:
+{
+   encounterNumber,
+   whatEncountered,
+    encounter value
+}
+Response sends json:
+{
+    encounterMatrix,
+    whatEncountered,
+    whatEncounteredPrefix
+}
+
+Request BoT Skills
+5.-8.
+Request sends json:
+{
+    encounterMatrix,
+    whatEncountered,
+    whatEncounteredPrefix,
+    action,
+    [skills]
+}
+Response sends json:
+{
+    [skills]
+}
+
+Request BoT Choices
+9.
+Request sends json:
+{
+    encounterMatrix,
+    whatEncountered,
+    whatEncounteredPrefix,
+    action,
+    masterSkillUsed or fateResult
+}
+Response sends json:
+{
+    initialText,
+    [choices]
+}
+
+Request BoT Result
+10.
+Request sends json:
+{
+    encounterMatrix,
+    whatEncountered,
+    whatEncounteredPrefix,
+    action,
+    masterSkillUsed or fateResult,
+    choice
+}
+Response sends json:
+{
+    resultText,
+    {
+        destiny,
+        story,
+        {wealth, maxMin},
+        [skills],
+        [statuses],
+        [treasures],
+        other
+    }
+}
